@@ -7,7 +7,7 @@ isSigningUp: false,
 isLoggingIn: false,
 isUpdatingProfile: false,
 
-isCheckingAuth : true
+isCheckingAuth : true,
 
 checkAuth : async()=>{
     try {
