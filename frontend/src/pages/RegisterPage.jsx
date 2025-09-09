@@ -5,7 +5,6 @@ import {
   MessagesSquare,
   User,
   Lock,
-  Loader,
   Loader2,
 } from "lucide-react";
 import { useState } from "react";
@@ -13,6 +12,7 @@ import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import AuthImagePattern from "../components/AuthImagePattern";
 import toast from "react-hot-toast";
+
 const RegisterPage = () => {
   const [showPassword, setshowPassword] = useState(false);
   const [formData, setformData] = useState({
@@ -30,7 +30,7 @@ const RegisterPage = () => {
     if (formData.password.length < 6)
       return toast.error("Password must be at least 6 Characters");
     if (formData.password !== formData.confirmPassword)
-  return toast.error("Passwords do not match");
+      return toast.error("Passwords do not match");
 
     return true;
   };
@@ -41,7 +41,7 @@ const RegisterPage = () => {
     if (success === true) signUp(formData);
   };
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
+    <div className="min-h-screen grid lg:grid-cols-2 lg:mt-4">
       {/* left section */}
       <div className="flex flex-col justify-center items-center p-6 sm:p-12">
         <div className="w-full max-w-md space-y-8">
@@ -132,26 +132,40 @@ const RegisterPage = () => {
               </div>
             </div>
 
-                  <div className="form control">
-  <label className="label">
-    <span className="label-text font-medium">Confirm Password</span>
-  </label>
-  <div className="relative border rounded-md">
-    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-      <Lock className="size-5 text-base-content/40" />
-    </div>
-    <input
-      type={showPassword ? "text" : "password"}
-      name="confirmPassword"
-      value={formData.confirmPassword}
-      onChange={(e) =>
-        setformData({ ...formData, confirmPassword: e.target.value })
-      }
-      placeholder="Confirm your password"
-      className="w-full h-10 bg-transparent pl-10"
-    />
-  </div>
-</div>
+            <div className="form control">
+              <label className="label">
+                <span className="label-text font-medium">Confirm Password</span>
+              </label>
+              <div className="relative border rounded-md">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="size-5 text-base-content/40" />
+                </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={(e) =>
+                    setformData({
+                      ...formData,
+                      confirmPassword: e.target.value,
+                    })
+                  }
+                  placeholder="Confirm your password"
+                  className="w-full h-10 bg-transparent pl-10"
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setshowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="size-5 text-base-content/40" />
+                  ) : (
+                    <Eye className="size-5 text-base-content/40" />
+                  )}
+                </button>
+              </div>
+            </div>
 
             <button
               type="submit"
