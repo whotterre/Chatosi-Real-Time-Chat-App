@@ -87,26 +87,43 @@ export const logout = (req, res) => {
 
 export const updateProfilePic = async (req, res) => {
   try {
-    const { profilePic } = req.body;
-    const userId = req.user._id;
+    const { profilePic, fullName } = req.body;
+    const userId = req.user?._id;
 
-    if (!profilePic) {
-      return res.status(400).json({ message: "Profile Pic is required" });
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized: user not found" });
     }
-    const uploadResponse = await cloudinary.uploader.upload(profilePic);
+
+    let uploadedImageUrl = null;
+    if (profilePic) {
+      const uploadResponse = await cloudinary.uploader.upload(profilePic, {
+        folder: "profile_pics",
+      });
+      uploadedImageUrl = uploadResponse.secure_url;
+    }
+
     const updatedUser = await userModel
       .findByIdAndUpdate(
         userId,
-        { profilePic: uploadResponse.secure_url },
+        {
+          ...(uploadedImageUrl && { profilePic: uploadedImageUrl }),
+          ...(fullName && { fullName }),
+        },
         { new: true }
       )
       .select("-password");
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     res.status(200).json(updatedUser);
   } catch (error) {
-    console.log("Error in update profile", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("Error in update profile:", error);
+    res.status(500).json({ message: error.message || "Internal Server Error" });
   }
 };
+
 
 export const checkAuth = (req, res) => {
   try {
