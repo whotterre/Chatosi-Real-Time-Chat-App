@@ -8,10 +8,14 @@ import ProfilePage from "./pages/ProfilePage";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
-import { Toaster  } from "react-hot-toast"
+import { Toaster } from "react-hot-toast";
+import { MessagesSquare } from "lucide-react";
+import { useThemeStore } from "./store/useThemeStore";
+
+
 export default function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
-
+  const { theme } = useThemeStore();
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
@@ -19,12 +23,18 @@ export default function App() {
 
   if (isCheckingAuth && !authUser)
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex flex-col items-center justify-center h-screen">
         <Loader className="size-10 animate-spin" />
+        <div className="flex gap-2 ">
+          <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
+            <MessagesSquare className="size-10 text-primary" />
+          </div>
+          <h1 className="text-xl font-serif font-bold">Chatosi</h1>
+        </div>
       </div>
     );
   return (
-    <div>
+    <div data-theme={theme?.trim()}>
       <Navbar />
       <Routes>
         <Route
