@@ -7,7 +7,7 @@ const AuthImagePattern = ({ title, subtitle }) => {
             <div
               key={i}
               className={`aspect-square rounded-2xl bg-primary/40 ${
-                i % 2 === 0 ? "bg-primary animate-pulse" : "bg-primary/10"
+                i % 2 === 0 ? "bg-primary animate-pulse" : "bg-primary/60"
               }`}
             /> 
           ))}

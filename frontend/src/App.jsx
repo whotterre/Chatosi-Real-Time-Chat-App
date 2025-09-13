@@ -12,20 +12,19 @@ import { Toaster } from "react-hot-toast";
 import { MessagesSquare } from "lucide-react";
 import { useThemeStore } from "./store/useThemeStore";
 
-
 export default function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   const { theme } = useThemeStore();
+
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-  console.log({ authUser });
 
   if (isCheckingAuth && !authUser)
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <Loader className="size-10 animate-spin" />
-        <div className="flex gap-2 ">
+        <div className="flex gap-2">
           <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
             <MessagesSquare className="size-10 text-primary" />
           </div>
@@ -33,27 +32,16 @@ export default function App() {
         </div>
       </div>
     );
+
   return (
-    <div data-theme={theme?.trim()}>
+    <div data-theme={theme}>
       <Navbar />
       <Routes>
-        <Route
-          path="/"
-          element={authUser ? <HomePage /> : <Navigate to={"/login"} />}
-        />
-        <Route
-          path="/register"
-          element={!authUser ? <RegisterPage /> : <Navigate to={"/"} />}
-        />
-        <Route
-          path="/login"
-          element={!authUser ? <LoginPage /> : <Navigate to={"/"} />}
-        />
+        <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
+        <Route path="/register" element={!authUser ? <RegisterPage /> : <Navigate to="/" />} />
+        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
         <Route path="/settings" element={<SettingsPage />} />
-        <Route
-          path="/profile"
-          element={authUser ? <ProfilePage /> : <Navigate to={"/login"} />}
-        />
+        <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
       </Routes>
       <Toaster />
     </div>
