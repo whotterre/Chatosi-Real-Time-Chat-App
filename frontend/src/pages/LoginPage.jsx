@@ -1,4 +1,4 @@
-import { Eye, EyeOff, Mail, MessagesSquare, Lock, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Mail, MessagesSquare, Lock, Loader } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
@@ -24,8 +24,8 @@ const LoginPage = () => {
           {/* logo */}
           <div className="text-center mb-8">
             <div className="flex flex-col items-center gap-2 group">
-              <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <MessagesSquare className="size-6 text-primary" />
+              <div className="size-12 rounded-xl  flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <MessagesSquare className="size-6 text-primary animate-bounce" />
               </div>
               <h1 className="text-2xl font-bold mt-2">Welcome Back</h1>
               <p className="text-base-content/60">Sign in to your account</p>
@@ -92,7 +92,7 @@ const LoginPage = () => {
             >
               {isLoggingIn ? (
                 <>
-                  <Loader2 className="size-5 animate-spin" />
+                  <Loader className="size-5 animate-spin" />
                   Loading...
                 </>
               ) : (

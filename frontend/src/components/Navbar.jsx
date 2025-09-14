@@ -13,7 +13,7 @@ const Navbar = () => {
               className="flex items-center gap-2.5 hover:opacity-80 transition-all"
               to="/"
             >
-              <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center">
                 <MessagesSquare className="w-7 h-7 text-primary" />
               </div>
               <h1 className="text-xl font-serif font-bold">Chatosi</h1>

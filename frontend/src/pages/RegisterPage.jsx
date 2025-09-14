@@ -5,7 +5,7 @@ import {
   MessagesSquare,
   User,
   Lock,
-  Loader2,
+  Loader,
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -41,15 +41,15 @@ const RegisterPage = () => {
     if (success === true) signUp(formData);
   };
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
+    <div className="min-h-screen grid lg:grid-cols-2 lg:mt-5 mt-12">
       {/* left section */}
       <div className="flex flex-col justify-center items-center lg:mt-8 p-6 sm:p-12">
         <div className="w-full max-w-md space-y-8">
           {/* logo */}
           <div className="text-center mb-8">
             <div className="flex flex-col items-center gap-2 group">
-              <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <MessagesSquare className="size-6 text-primary" />
+              <div className="size-12 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <MessagesSquare className="size-6 text-primary animate-bounce" />
               </div>
               <h1 className="text-2xl font-bold mt-2">Create Account</h1>
               <p className="text-base-content/60">
@@ -174,7 +174,7 @@ const RegisterPage = () => {
             >
               {isSigningUp ? (
                 <>
-                  <Loader2 className="size-5 animate-spin" />
+                  <Loader className="size-5 animate-spin" />
                   Loading...
                 </>
               ) : (
