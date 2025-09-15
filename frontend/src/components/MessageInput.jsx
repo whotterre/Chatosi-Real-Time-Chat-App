@@ -7,15 +7,25 @@ const MessageInput = () => {
   const [text, setText] = useState("");
   const [imagePreview, setimagePreview] = useState(null);
   const fileInputRef = useRef(null);
-  const { sendMessages } = useChatStore;
+  const { sendMessages } = useChatStore()
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file.type.startsWith("image/")) {
-      toast.error("Please select an Image file");
-      return;
-    }
+const handleImageChange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    toast.error("Please select an Image file");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    setimagePreview(reader.result); // base64 string
   };
+  reader.readAsDataURL(file);
+};
+
+
 
   const removeImage = () => {
     setimagePreview(null);
@@ -28,7 +38,7 @@ const MessageInput = () => {
     try {
       await sendMessages({
         text: text.trim(),
-        Image: imagePreview,
+        image: imagePreview,
       });
       // clear form
       setText("");
