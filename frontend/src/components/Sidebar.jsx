@@ -6,10 +6,9 @@ import avatar from "../../public/avatar.png";
 import { useAuthStore } from "../store/useAuthStore";
 
 const Sidebar = () => {
-  const { getUsers, selectedUser, users, setSelectedUser, isUserLoading } =
-    useChatStore();
+  const { getUsers, selectedUser, users, setSelectedUser, isUserLoading } = useChatStore();
 
-  const { onlineUsers } = useAuthStore
+  const { onlineUsers } = useAuthStore()
 
   useEffect(() => {
     getUsers();
