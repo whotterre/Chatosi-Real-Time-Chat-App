@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import SidebarSkeleton from "./skeletons/SidebarSkeleton";
 import { Users } from "lucide-react";
@@ -6,16 +6,19 @@ import avatar from "../../public/avatar.png";
 import { useAuthStore } from "../store/useAuthStore";
 
 const Sidebar = () => {
-  const { getUsers, selectedUser, users, setSelectedUser, isUserLoading } = useChatStore();
+  const { getUsers, selectedUser, users, setSelectedUser, isUserLoading } =
+    useChatStore();
 
-  const { onlineUsers } = useAuthStore()
-  const [showOnlineOnly, setshowOnlineOnly] = useState(false)
+  const { onlineUsers } = useAuthStore();
+  const [showOnlineOnly, setshowOnlineOnly] = useState(false);
 
   useEffect(() => {
     getUsers();
   }, [getUsers]);
 
-  const filteredUsers = showOnlineOnly ? users.filter(user => onlineUsers.includes(user._id)) : users
+  const filteredUsers = showOnlineOnly
+    ? users.filter((user) => onlineUsers.includes(user._id))
+    : users;
 
   if (isUserLoading) return <SidebarSkeleton />;
   return (
@@ -28,14 +31,17 @@ const Sidebar = () => {
         {/**  online Users toggle */}
         <div className="mt-3 hidden lg:flex items-center gap-2">
           <label className="cursor-pointer flex items-center gap-2 ">
-            <input type="checkbox"
-            checked={showOnlineOnly}
-            onChange={(e)=> setshowOnlineOnly(e.target.checked)}
-            className="checkbox checkbox-sm"/>
+            <input
+              type="checkbox"
+              checked={showOnlineOnly}
+              onChange={(e) => setshowOnlineOnly(e.target.checked)}
+              className="checkbox checkbox-sm"
+            />
             <span className="text-sm">Show online Users</span>
           </label>
-<span className="text-sm text-zinc-500">({onlineUsers.length - 1})</span>
-
+          <span className="text-sm text-zinc-500">
+            ({onlineUsers.length - 1} online )
+          </span>
         </div>
       </div>
       <div className="overflow-y-auto w-full py-3">
