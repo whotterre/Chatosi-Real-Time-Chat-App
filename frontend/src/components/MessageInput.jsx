@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
-import { Image, Send, X } from "lucide-react";
+import { Image, Loader, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
 
 const MessageInput = () => {
@@ -8,7 +8,7 @@ const MessageInput = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
   const { sendMessages } = useChatStore();
-
+  const [isLoading, setisLoading] = useState(false);
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -33,6 +33,7 @@ const MessageInput = () => {
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!text.trim() && !imagePreview) return;
+    setisLoading(true);
     try {
       await sendMessages({
         text: text.trim(),
@@ -45,6 +46,8 @@ const MessageInput = () => {
     } catch (error) {
       console.error("Failed to send message", error);
       toast.error("Failed to send message");
+    } finally {
+      setisLoading(false);
     }
   };
 
@@ -104,11 +107,15 @@ const MessageInput = () => {
 
         <button
           type="submit"
-          className="btn btn-circle btn-sm sm:btn-md bg-primary text-white hover:bg-primary-dark transition-colors flex items-center justify-center"
-          disabled={!text.trim() && !imagePreview}
+          className="btn btn-circle btn-sm sm:btn-md bg-primary text-white hover:bg-primary-dark transition-colors flex items-center justify-center disabled:opacity-50"
+          disabled={(!text.trim() && !imagePreview) || isLoading}
           aria-label="Send message"
         >
-          <Send size={20} />
+          {isLoading ? (
+            <Loader className="animate-spin" size={20} />
+          ) : (
+            <Send size={20} />
+          )}
         </button>
       </form>
     </div>

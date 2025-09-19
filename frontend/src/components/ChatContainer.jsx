@@ -1,16 +1,23 @@
-import { useEffect, useRef } from 'react'
-import { useChatStore } from '../store/useChatStore'
-import ChatHeader from './ChatHeader'
-import MessageInput from './MessageInput'
-import MessageSkeleton from './skeletons/MessageSkeleton'
-import { useAuthStore } from '../store/useAuthStore'
-import avatar from "../../public/avatar.png"
-import { formatMessageTime } from '../lib/utils'
+import { useEffect, useRef } from "react";
+import { useChatStore } from "../store/useChatStore";
+import ChatHeader from "./ChatHeader";
+import MessageInput from "./MessageInput";
+import MessageSkeleton from "./skeletons/MessageSkeleton";
+import { useAuthStore } from "../store/useAuthStore";
+import avatar from "../../public/avatar.png";
+import { formatMessageTime } from "../lib/utils";
 
 const ChatContainer = () => {
-  const { isMessagesLoading, messages, getMessages, selectedUser, subscribeToMessages, unSubscribeFromMessages } = useChatStore()
-  const { authUser } = useAuthStore()
-  const messageEndRef = useRef(null)
+  const {
+    isMessagesLoading,
+    messages,
+    getMessages,
+    selectedUser,
+    subscribeToMessages,
+    unSubscribeFromMessages,
+  } = useChatStore();
+  const { authUser } = useAuthStore();
+  const messageEndRef = useRef(null);
 
   // fetch + subscribe only when a user is selected
   useEffect(() => {
@@ -20,7 +27,12 @@ const ChatContainer = () => {
     subscribeToMessages();
 
     return () => unSubscribeFromMessages();
-  }, [selectedUser?._id, getMessages, subscribeToMessages, unSubscribeFromMessages]);
+  }, [
+    selectedUser?._id,
+    getMessages,
+    subscribeToMessages,
+    unSubscribeFromMessages,
+  ]);
 
   // auto-scroll when new messages come
   useEffect(() => {
@@ -31,11 +43,11 @@ const ChatContainer = () => {
 
   if (isMessagesLoading) {
     return (
-      <div className='flex-1 flex flex-col overflow-auto'>
+      <div className="flex-1 flex flex-col overflow-auto">
         <ChatHeader />
         <MessageSkeleton />
       </div>
-    )
+    );
   }
 
   if (!selectedUser) {
@@ -43,38 +55,51 @@ const ChatContainer = () => {
       <div className="flex-1 flex items-center justify-center text-gray-500">
         Select a chat to start messaging
       </div>
-    )
+    );
   }
 
   return (
-    <div className='flex flex-1 flex-col overflow-auto'>
+    <div className="flex flex-1 flex-col overflow-auto">
       <ChatHeader />
 
-      <div className='flex-1 overflow-y-auto p-4 space-y-4'>
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((i) => (
           <div
             key={i._id}
-            className={`chat ${i.senderId === authUser._id ? "chat-end" : "chat-start"}`}
+            className={`chat ${
+              i.senderId === authUser._id ? "chat-end" : "chat-start"
+            }`}
             ref={messageEndRef}
           >
-            <div className='chat-image avatar'>
-              <div className='size-10 rounded-full border'>
+            <div className="chat-image avatar">
+              <div className="size-10 rounded-full border">
                 <img
-                  src={i.senderId === authUser._id ? authUser.profilePic || avatar : selectedUser.profilePic || avatar}
+                  src={
+                    i.senderId === authUser._id
+                      ? authUser.profilePic || avatar
+                      : selectedUser.profilePic || avatar
+                  }
                   alt="profile pic"
                 />
               </div>
             </div>
 
-            <div className='chat-header mb-1'>
-              <time className='text-xs opacity-50 ml-1'>{formatMessageTime(i.createdAt)}</time>
+            <div className="chat-header mb-1">
+              <time className="text-xs opacity-50 ml-1">
+                {formatMessageTime(i.createdAt)}
+              </time>
             </div>
-
-            <div className='chat-bubble flex flex-col'>
+            <div className="chat-bubble flex flex-col break-words max-w-[75%] sm:max-w-[60%] md:max-w-[50%]">
               {i.image && (
-                <img src={i.image} alt="attachment" className='sm:max-w-[200px] rounded-md mb-2' />
+                <img
+                  src={i.image}
+                  alt="attachment"
+                  className="sm:max-w-[200px] rounded-md mb-2"
+                />
               )}
-              {i.text && <p>{i.text}</p>}
+              {i.text && (
+                <p className="whitespace-pre-wrap break-words">{i.text}</p>
+              )}
             </div>
           </div>
         ))}
@@ -82,7 +107,7 @@ const ChatContainer = () => {
 
       <MessageInput />
     </div>
-  )
-}
+  );
+};
 
-export default ChatContainer
+export default ChatContainer;
