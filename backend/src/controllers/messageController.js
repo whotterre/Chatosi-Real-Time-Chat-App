@@ -3,7 +3,6 @@ import userModel from "../models/userModel.js";
 import cloudinary from "../lib/cloudinary.js";
 import { getRecieverSocketId, io } from "../lib/socket.js";
 
-
 export const getUsersForSideBar = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
@@ -11,7 +10,7 @@ export const getUsersForSideBar = async (req, res) => {
       .find({ _id: { $ne: loggedInUserId } })
       .select("-password");
 
-    res.status(200).json( filteredUsers);
+    res.status(200).json(filteredUsers);
   } catch (error) {
     console.log("Error in getUserForSideBar", error.message);
     res.status(500).json({ error: error.message || "Internal Server Error" });
@@ -20,7 +19,7 @@ export const getUsersForSideBar = async (req, res) => {
 
 export const getMessages = async (req, res) => {
   try {
-    const { id: userToChatId } = req.params;
+    const { id: userToChatId } = req.params; // the other user's ID
     const myId = req.user._id;
 
     const messages = await messageModel.find({
@@ -28,13 +27,15 @@ export const getMessages = async (req, res) => {
         { senderId: myId, receiverId: userToChatId },
         { senderId: userToChatId, receiverId: myId },
       ],
-    });
+    }).sort({ createdAt: 1 }); // sort oldest → newest
+
     res.status(200).json(messages);
   } catch (error) {
-    console.log("Error in the Get messages controller", error.message);
+    console.log("Error in getMessages controller:", error.message);
     res.status(500).json({ error: error.message || "Internal Server Error" });
   }
 };
+
 
 export const sendMessages = async (req, res) => {
   try {
@@ -57,10 +58,15 @@ export const sendMessages = async (req, res) => {
 
     await newMessage.save();
 
+    const receiverSocketId = getRecieverSocketId(receiverId);
+    const senderSocketId = getRecieverSocketId(senderId);
 
-    const receiverSocketId = getRecieverSocketId(receiverId)
-    if(receiverSocketId){
-      io.to(receiverSocketId).emit("newMessage", newMessage)
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
+
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("newMessage", newMessage);
     }
 
     res.status(201).json(newMessage);
@@ -69,4 +75,3 @@ export const sendMessages = async (req, res) => {
     res.status(500).json({ error: error.message || "Internal Server Error" });
   }
 };
- 
