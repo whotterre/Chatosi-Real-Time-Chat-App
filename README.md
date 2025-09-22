@@ -24,7 +24,7 @@ This app allows users to sign up, log in, see online users, and chat in real tim
 ---
 
 ## 🚀 Live Demo  
-👉 [View Shoposi Live Demo](https://chatosi-real-time-chat-app-1.onrender.com/)  
+👉 [View Chatosi Live Demo](https://chatosi-real-time-chat-app-1.onrender.com/)  
 
 ## 📸 Screenshots  
 ---
