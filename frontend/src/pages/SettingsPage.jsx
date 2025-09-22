@@ -13,7 +13,22 @@ const PREVIEW_MESSAGES = [
     content: "I'm doing great! It was created by Bragosi.",
     isSent: true,
   },
+  {
+    id: 3,
+    content: (
+      <a
+        href="https://github.com/Bragosi/Chatosi-Real-Time-Chat-App/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-500 underline"
+      >
+      View GitHub Repo
+      </a>
+    ),
+    isSent: false,
+  },
 ];
+
 
 const SettingsPage = () => {
   const { theme, setTheme } = useThemeStore();
