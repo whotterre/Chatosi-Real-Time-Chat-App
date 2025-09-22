@@ -3,8 +3,8 @@ import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client"
 
-const BASE_URL = import.meta.env.MODE === "development" ?  "http://localhost:5000/api" : "/"
-
+const SOCKET_BASE_URL = import.meta.env.MODE === "development" ?  "http://localhost:5000" : "/"  
+const API_BASE_URL = import.meta.env.MODE === "development" ?  "http://localhost:5000/api" : "/api" 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
   isSigningUp: false,
@@ -79,25 +79,41 @@ export const useAuthStore = create((set, get) => ({
     }
    },
 
-  connectSocket : ()=>{
-    const {authUser} = get()
-    if(!authUser || get().socket?.connected) return;
-    const socketIo = io(BASE_URL, {
+// useAuthStore.js - UPDATE connectSocket with LOUD LOGS
+connectSocket : ()=>{
+    const {authUser, socket} = get()
+    if(!authUser || socket?.connected) {
+      return;
+    }
+  
+    const socketIo = io(SOCKET_BASE_URL, {  // ← CHANGED: Use SOCKET_BASE_URL instead of BASE_URL!
       query : {
         userId : authUser._id
-      }
+      },
+      transports: ['websocket', 'polling']
     })
-    socketIo.connect()
-    set({ socket : socketIo })
+  
+    
+    socketIo.on("connect", () => {
+    });
+
+    socketIo.on("connect_error", () => {
+    });
 
     socketIo.on("getOnlineUsers",(userIds)=>{
       set({ onlineUsers : userIds })
-    })
+    });
+
+    set({ socket : socketIo })
   
-   },
+  },
    
-   disconnectSocket : ()=>{
-      if(get().socket?.connected) get().socket.disconnect()
-   }
+  disconnectSocket : ()=>{
+    const currentSocket = get().socket
+    if(currentSocket?.connected) {
+      currentSocket.disconnect()
+    }
+    set({ socket: null })
+  }
 
 }));

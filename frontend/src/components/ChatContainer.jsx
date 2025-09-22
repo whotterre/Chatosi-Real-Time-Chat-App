@@ -13,8 +13,8 @@ const ChatContainer = () => {
     messages,
     getMessages,
     selectedUser,
-    subscribeToMessages,
-    unSubscribeFromMessages,
+    subscribeToMasterListener,
+    unSubscribeFromMasterListener,
   } = useChatStore();
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
@@ -24,14 +24,14 @@ const ChatContainer = () => {
     if (!selectedUser?._id) return;
 
     getMessages(selectedUser._id);
-    subscribeToMessages();
+    subscribeToMasterListener();
 
-    return () => unSubscribeFromMessages();
+    return () => unSubscribeFromMasterListener();
   }, [
     selectedUser?._id,
     getMessages,
-    subscribeToMessages,
-    unSubscribeFromMessages,
+    subscribeToMasterListener,
+    unSubscribeFromMasterListener,
   ]);
 
   // auto-scroll when new messages come

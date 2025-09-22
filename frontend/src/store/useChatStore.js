@@ -9,12 +9,22 @@ export const useChatStore = create((set, get) => ({
   selectedUser: null,
   isUserLoading: false,
   isMessagesLoading: false,
+  unreadCounts: {},
+  // 👇 NEW: Track if master listener is active to prevent duplicates
+  masterListenerActive: false,
 
   getUsers: async () => {
     set({ isUserLoading: true });
     try {
-      const res = await axiosInstance.get("/message/users");
-      set({ users: res.data });
+      const [usersRes, unreadRes] = await Promise.all([
+        axiosInstance.get("/message/users"),
+        axiosInstance.get("/message/unread-count"),
+      ]);
+
+      set({
+        users: usersRes.data,
+        unreadCounts: unreadRes.data,
+      });
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
@@ -25,8 +35,14 @@ export const useChatStore = create((set, get) => ({
   getMessages: async (userId) => {
     set({ isMessagesLoading: true });
     try {
+      await axiosInstance.put(`/message/${userId}/mark-read`);
       const res = await axiosInstance.get(`/message/${userId}`);
       set({ messages: res.data });
+
+      const currentUnread = get().unreadCounts;
+      const newUnread = { ...currentUnread };
+      delete newUnread[userId];
+      set({ unreadCounts: newUnread });
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
@@ -47,26 +63,68 @@ export const useChatStore = create((set, get) => ({
     }
   },
 
-  subscribeToMessages: () => {
-    const { selectedUser } = get();
-    if (!selectedUser) return;
+  // 👇 SINGLE MASTER LISTENER - handles EVERYTHING!
+  subscribeToMasterListener: () => {
+    const { masterListenerActive } = get();
+    if (masterListenerActive) {
+      return;
+    }
 
     const socket = useAuthStore.getState().socket;
-
+    if (!socket) {
+      return;
+    }
     socket.on("newMessage", (newMessage) => {
-      // only update if the message belongs to the currently selected chat
-      if (
-        newMessage.senderId === selectedUser._id ||
-        newMessage.receiverId === selectedUser._id
-      ) {
-        set({ messages: [...get().messages, newMessage] });
+      const { messages, selectedUser, unreadCounts } = get();
+      const myId = useAuthStore.getState().authUser._id.toString();
+      const senderIdStr = newMessage.senderId.toString();
+      const receiverIdStr = newMessage.receiverId.toString();
+
+      // 1. Check if this is for the current chat
+      const isCurrentChat =
+        selectedUser &&
+        (senderIdStr === selectedUser._id.toString() ||
+          receiverIdStr === selectedUser._id.toString());
+
+      // 2. Check if this is for me (unread count logic)
+      const isForMe = receiverIdStr === myId;
+
+      // Handle current chat messages
+      if (isCurrentChat && !messages.find((m) => m._id === newMessage._id)) {
+        set({ messages: [...messages, newMessage] });
+      }
+
+      // Handle unread counts (only if message is for me and not current chat)
+      if (isForMe && !isCurrentChat) {
+        console.log("🔢 Updating unread count for:", senderIdStr);
+        const newUnreadCounts = {
+          ...unreadCounts,
+          [senderIdStr]: (unreadCounts[senderIdStr] || 0) + 1,
+        };
+        console.log("🔢 New count:", newUnreadCounts[senderIdStr]);
+        set({ unreadCounts: newUnreadCounts });
+      }
+
+      // If message is for current chat AND for me, don't count as unread
+      if (isCurrentChat && isForMe) {
+        return;
       }
     });
+
+    set({ masterListenerActive: true });
   },
 
-  unSubscribeFromMessages: () => {
+  unSubscribeFromMasterListener: () => {
     const socket = useAuthStore.getState().socket;
-    socket.off("newMessage");
+    if (socket) {
+      socket.off("newMessage");
+    }
+    set({ masterListenerActive: false });
+  },
+
+  getUnreadCount: (userId) => {
+    const { unreadCounts } = get();
+    return unreadCounts[userId] || 0;
   },
 
   setSelectedUser: (selectedUser) => set({ selectedUser }),
