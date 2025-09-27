@@ -28,7 +28,7 @@ const HomePage = () => {
 
       <div className="relative z-10 flex items-center justify-center min-h-screen p-4 pt-16">
         <div className="bg-base-100/80 backdrop-blur-lg rounded-2xl shadow-2xl border border-base-300/20 w-full container h-[90vh] min-h-[600px] overflow-hidden">
-          <div className="flex h-full">
+          <div className="flex flex-col md:flex-row lg:flex-row h-full">
             {/* Sidebar with smooth transitions */}
             <div className={`
               w-full md:w-80 lg:w-96 transition-all duration-300 ease-in-out border-r border-base-300/20
@@ -50,7 +50,7 @@ const HomePage = () => {
       </div>
 
       {/* Mobile Status Bar */}
-      <div className="md:hidden fixed bottom-4 left-4 right-4 bg-base-100/90 backdrop-blur-lg rounded-lg shadow-lg border border-base-300/20 p-3 z-20">
+      {/* <div className="md:hidden fixed bottom-4 left-4 right-4 bg-base-100/90 backdrop-blur-lg rounded-lg shadow-lg border border-base-300/20 p-3 z-20">
         <div className="flex justify-between items-center text-sm">
           <span className="text-base-content/70 truncate">
             {selectedUser ? `Chatting with ${selectedUser.username}` : 'Select a chat to start messaging'}
@@ -60,7 +60,7 @@ const HomePage = () => {
             <span className="text-base-content/50">Online</span>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

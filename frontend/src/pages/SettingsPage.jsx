@@ -63,8 +63,6 @@ const SettingsPage = () => {
     }
   };
 
-  console.debug({isOpen});
-
   if (!isOpen) return null;
 
   return (

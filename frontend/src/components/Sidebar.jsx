@@ -59,8 +59,6 @@ const Sidebar = () => {
 
   if (isUserLoading) return <SidebarSkeleton />;
 
-  console.debug({currentUser, onlineUsers})
-
   return (
     <>
       {/* Mobile Menu Button */}
@@ -88,12 +86,12 @@ const Sidebar = () => {
       `}>
 
         {/* Header */}
-        <div className="border-b border-base-300/20 p-4">
+        <div className="border-b border-base-300/20 p-4 space-y-2">
           {/* Mobile Header */}
           <div className="flex items-center justify-between mb-4 md:mb-0">
             <div className="flex items-center gap-3">
               <Users className="size-6 text-primary" />
-              <span className="font-semibold text-lg hidden lg:block md:hidden lg:block">Contacts</span>
+              <span className="font-semibold text-lg hidden md:hidden lg:block">Your Contacts</span>
               <span className="font-semibold text-lg md:hidden">Chats</span>
             </div>
 
@@ -107,7 +105,7 @@ const Sidebar = () => {
           </div>
 
           {/* Search Bar - Hidden on mobile when collapsed */}
-          <div className="hidden lg:block md:hidden lg:block">
+          <div className="hidden md:hidden lg:block">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 size-4 text-base-content/40" />
               <input
@@ -121,7 +119,7 @@ const Sidebar = () => {
           </div>
 
           {/* Online Users Toggle */}
-          <div className="mt-3 hidden lg:flex md:hidden lg:flex items-center justify-between">
+          <div className="mt-5 hidden md:hidden lg:flex items-center justify-between">
             <label className="cursor-pointer flex items-center gap-2">
               <input
                 type="checkbox"
