@@ -10,7 +10,7 @@ const ProfilePage = () => {
   const [fullName, setFullName] = useState(authUser?.fullName || "");
   const [hasChanges, setHasChanges] = useState(false);
 
-  const { isSettingOpen: isOpen, openSettings } = useThemeStore();
+  const { isProfileOpen: isOpen, openSettings } = useThemeStore();
   
     const onClose = () => {
       openSettings(false);

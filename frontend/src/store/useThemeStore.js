@@ -10,7 +10,11 @@ export const useThemeStore = create((set) => ({
   isProfileOpen: false,
 
   openSettings: (open) => {
-    set({ isSettingsOpen: open });
+    set({ isProfileOpen: false });
+    set({ isSettingOpen: open });
   },
-  openProfile: (open) => set({ isProfileOpen: open }),
+  openProfile: (open) => {
+    set({ isSettingsOpen: false });
+    set({ isProfileOpen: open })
+  },
 }));
