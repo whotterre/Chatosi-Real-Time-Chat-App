@@ -18,8 +18,6 @@ const HomePage = () => {
     };
   }, []);
 
-  console.debug({selectedUser})
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-base-200 via-base-100 to-base-300 relative overflow-hidden">
       {/* Animated background elements */}

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* Custom scrollbar */
-.scrollbar-thin::-webkit-scrollbar {
+/* .scrollbar-thin::-webkit-scrollbar {
     width: 6px;
 }
 
@@ -14,6 +14,23 @@
 .scrollbar-thin::-webkit-scrollbar-thumb {
     background: hsl(var(--bc) / 0.2);
     border-radius: 3px;
+} */
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--bc) / 0.4);
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--bc) / 0.2);
+    border-radius: 2px;
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
@@ -143,4 +160,82 @@
     100% {
         background-position: 0% 50%;
     }
+}
+
+/* Smooth dropdown animations */
+.dropdown-enter {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.dropdown-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 200ms, transform 200ms;
+}
+
+.dropdown-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dropdown-exit-active {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 150ms, transform 150ms;
+}
+
+/* Status pulse animation */
+@keyframes status-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.status-pulse {
+    animation: status-pulse 2s ease-in-out infinite;
+}
+
+/* Hover glow effect */
+.hover-glow:hover {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+}
+
+
+/* Hide scrollbar for horizontal reactions */
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Smooth animations */
+@keyframes gentle-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.animate-gentle-pulse {
+    animation: gentle-pulse 2s ease-in-out infinite;
+}
+
+/* Focus styles */
+.input-focus-effect:focus {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }

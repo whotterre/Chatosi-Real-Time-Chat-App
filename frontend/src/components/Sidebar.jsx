@@ -15,7 +15,7 @@ const Sidebar = () => {
     isUserLoading,
   } = useChatStore();
 
-  const { onlineUsers, user: currentUser } = useAuthStore();
+  const { onlineUsers, authUser: currentUser } = useAuthStore();
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -58,6 +58,8 @@ const Sidebar = () => {
   };
 
   if (isUserLoading) return <SidebarSkeleton />;
+
+  console.debug({currentUser, onlineUsers})
 
   return (
     <>
@@ -229,7 +231,7 @@ const Sidebar = () => {
         </div>
 
         {/* Current User Info - Bottom */}
-        <div className="border-t border-base-300/20 p-4 hidden md:hidden lg:block">
+        <div className="border-t border-primary p-4 hidden md:hidden lg:block">
           <div className="flex items-center gap-3">
             <div className="relative">
               <img
