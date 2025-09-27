@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import { LogOut, MessagesSquare, Settings, User } from "lucide-react";
+import { useThemeStore } from "../store/useThemeStore";
 
 const Navbar = () => {
   const { authUser, logout } = useAuthStore();
+  const {
+      openSettings,
+      openProfile
+    } = useThemeStore();
   return (
     <header className="bg-base-100 border-b border-base-300 fixed w-full z-40 top-0 backdrop-blur-lg bg-base-100/80">
       <div className="container mx-auto px-4 h-16">
@@ -24,6 +29,10 @@ const Navbar = () => {
             <Link
               to={"/settings"}
               className={`btn btn-sm gap-2 transition-colors`}
+              onClick={(e)=>{
+                e.preventDefault();
+                openSettings(true);
+              }}
             >
               <Settings className="w-4 h-4" />
               <span className="hidden sm:inline">Settings</span>
@@ -33,6 +42,10 @@ const Navbar = () => {
                 <Link
                   to={"/profile"}
                   className="btn btn-sm btn-ghost normal-case"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openProfile(true);
+                  }}
                 >
                   <User className="size-5" />
                   <span className="hidden sm:inline">Profile</span>

@@ -71,6 +71,9 @@ export default function App() {
               element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
             />
           </Routes>
+
+            <SettingsPage/>
+            <ProfilePage/>
         </>
       )}
       <ChatToaster />

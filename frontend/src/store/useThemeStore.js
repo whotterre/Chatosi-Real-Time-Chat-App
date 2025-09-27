@@ -6,4 +6,11 @@ export const useThemeStore = create((set) => ({
     localStorage.setItem("chat-theme", theme);
     set({ theme });
   },
+  isSettingOpen: false,
+  isProfileOpen: false,
+
+  openSettings: (open) => {
+    set({ isSettingsOpen: open });
+  },
+  openProfile: (open) => set({ isProfileOpen: open }),
 }));
