@@ -96,12 +96,10 @@ export const useChatStore = create((set, get) => ({
 
       // Handle unread counts (only if message is for me and not current chat)
       if (isForMe && !isCurrentChat) {
-        console.log("🔢 Updating unread count for:", senderIdStr);
         const newUnreadCounts = {
           ...unreadCounts,
           [senderIdStr]: (unreadCounts[senderIdStr] || 0) + 1,
         };
-        console.log("🔢 New count:", newUnreadCounts[senderIdStr]);
         set({ unreadCounts: newUnreadCounts });
       }
 
