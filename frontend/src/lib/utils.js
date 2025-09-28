@@ -6,11 +6,20 @@ export function formatMessageTime(date){
     })
 }
 /**
+ * Truncates text over 50 chars 
+ * @param string {*} text 
+ */
+function truncateLongText(text){
+    return text.length > 50 ? text.slice(49) + "..." : text;
+}
+
+/**
  * Sends a notification 
  * This is used when you recieve a message
  * @param string {*} notifMessage 
  */
-export function sendNotificatons(notifMessage) {
+export function sendNotificatons(notifText) {
+    const notifMessage = truncateLongText(notifText);
     if (Notification.permission === "granted") {
         const notif = new Notification(notifMessage);
         notif.onclick = () => window.focus();
