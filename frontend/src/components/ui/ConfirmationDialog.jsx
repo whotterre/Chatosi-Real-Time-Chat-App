@@ -52,9 +52,9 @@ const ConfirmationDialog = ({
                 };
             default:
                 return {
-                    iconBg: 'bg-primary/20',
+                    iconBg: 'bg-primary',
                     iconColor: 'text-primary',
-                    button: 'btn-primary'
+                    button: 'text-primary'
                 };
         }
     };
@@ -99,13 +99,13 @@ const ConfirmationDialog = ({
                 <div className="flex gap-3 justify-end p-6 border-t border-base-300/30">
                     <button
                         onClick={onClose}
-                        className="px-6 py-2.5 border border-base-300/50 rounded-lg hover:bg-base-300/50 transition-colors font-medium"
+                        className="px-6 py-2.5 border border-base-300/50 rounded-lg hover:bg-base-300/50 transition-colors font-medium text-primary"
                     >
                         {cancelText}
                     </button>
                     <button
                         onClick={onConfirm}
-                        className={`px-6 py-2.5 ${styles.button} text-${type}-content rounded-lg hover:opacity-90 transition-colors font-medium shadow-lg`}
+                        className={`px-6 py-2.5 text-${type}-content rounded-lg hover:opacity-90 transition-colors font-medium shadow-lg`}
                         autoFocus
                     >
                         {confirmText}
