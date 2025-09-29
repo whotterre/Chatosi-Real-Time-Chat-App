@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
 import { useAuthStore } from "./useAuthStore";
 import { sendNotificatons } from "../lib/utils";
+import {truncateLongText} from "../lib/utils"
 
 export const useChatStore = create((set, get) => ({
   messages: [],
@@ -105,7 +106,7 @@ export const useChatStore = create((set, get) => ({
         set({ unreadCounts: newUnreadCounts });
         // Send browser notification
         sendNotificatons(
-          `${newMessage.senderName || 'New Message'}: ${newMessage.text ? newMessage.text.slice(0, 50) : 'Sent a message'}`
+          `Chatosi:\n${newMessage.text ? truncateLongText(newMessage.text) : 'New message recieved'}`
         );
       }
 
