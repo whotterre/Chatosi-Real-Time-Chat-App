@@ -32,14 +32,14 @@ const Sidebar = () => {
   }, [selectedUser]);
 
   // Filter users based on search and online status
-  const filteredUsers = users
-    .filter(user => user._id !== currentUser?._id) // Exclude current user
-    .filter(user =>
-      user.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.username?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .filter(user => !showOnlineOnly || onlineUsers.includes(user._id))
-    .sort((a, b) => {
+  const filteredUsers = users.filter(user => {
+    const isNotCurrentUser = user._id !== currentUser?._id;
+    const matchesSearch = [user.fullName, user.username]
+      .some(field => field?.toLowerCase().includes(searchTerm.toLowerCase()));
+    const isOnlineOrNotFiltered = !showOnlineOnly || onlineUsers.includes(user._id);
+
+    return isNotCurrentUser && matchesSearch && isOnlineOrNotFiltered;
+  }).sort((a, b) => {
       const aOnline = onlineUsers.includes(a._id) ? -1 : 1;
       const bOnline = onlineUsers.includes(b._id) ? -1 : 1;
       return aOnline - bOnline;
@@ -187,7 +187,7 @@ const Sidebar = () => {
                   </div>
 
                   {/* User Info - Hidden on medium screens, visible on large */}
-                  <div className="hidden lg:flex md:hidden lg:flex flex-col items-start min-w-0 flex-1">
+                  <div className="hidden md:hidden lg:flex flex-col items-start min-w-0 flex-1">
                     <div className="flex items-center gap-2 w-full">
                       <span className="font-medium truncate text-base-content">
                         {user.fullName}
@@ -212,7 +212,7 @@ const Sidebar = () => {
                   </div>
 
                   {/* Mobile-only user info */}
-                  <div className="lg:hidden md:flex lg:hidden flex-col items-center text-center">
+                  <div className="md:flex lg:hidden flex-col items-center text-center">
                     <span className="text-xs font-medium truncate max-w-[50px]">
                       {user.fullName?.split(' ')[0]}
                     </span>

@@ -151,23 +151,6 @@ const MessageInput = () => {
         </div>
       )}
 
-      {/* Quick Reactions Bar */}
-      {/* <div className="flex items-center gap-2 mb-3 overflow-x-auto scrollbar-hide">
-        <span className="text-xs text-base-content/50 whitespace-nowrap">Quick reactions:</span>
-        <div className="flex gap-1">
-          {quickReactions.map((reaction, index) => (
-            <button
-              key={index}
-              onClick={() => setText(prev => prev + reaction)}
-              className="p-1.5 hover:bg-base-300 rounded-lg transition-colors text-lg"
-              title={`Add ${reaction}`}
-            >
-              {reaction}
-            </button>
-          ))}
-        </div>
-      </div> */}
-
       <form onSubmit={handleSendMessage} className="flex items-end gap-2">
         {/* Attachment Menu */}
         <div className="relative group">

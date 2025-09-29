@@ -48,19 +48,6 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-
-      {/* Mobile Status Bar */}
-      {/* <div className="md:hidden fixed bottom-4 left-4 right-4 bg-base-100/90 backdrop-blur-lg rounded-lg shadow-lg border border-base-300/20 p-3 z-20">
-        <div className="flex justify-between items-center text-sm">
-          <span className="text-base-content/70 truncate">
-            {selectedUser ? `Chatting with ${selectedUser.username}` : 'Select a chat to start messaging'}
-          </span>
-          <div className="flex items-center space-x-2 shrink-0">
-            <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
-            <span className="text-base-content/50">Online</span>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };

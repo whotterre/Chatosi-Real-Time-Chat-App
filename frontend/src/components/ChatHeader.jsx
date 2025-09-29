@@ -34,10 +34,6 @@ const ChatHeader = () => {
     setSelectedUser(null);
   };
 
-  // useKeyboardShortcuts([
-  //   { key: 'Escape', action: handleCloseChat },
-  //   { key: 'i', ctrlKey: true, action: () => console.log('Open info') },
-  // ]);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -191,18 +187,6 @@ const ChatHeader = () => {
           </button>
         </div>
       </div>
-
-      {/* Typing indicator (later feature hopefully) */}
-      {/* {isTyping && (
-        <div className="flex items-center gap-2 mt-2 text-sm text-primary">
-          <div className="flex gap-1">
-            <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
-            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-          </div>
-          <span>{selectedUser.fullName} is typing...</span>
-        </div>
-      )} */}
     </div>
   );
 };

@@ -45,7 +45,7 @@ Features professional code conventions, standardized patterns, and a clean archi
 
 ## 📁 Project Structure
 
-```
+```bash
 chatosi/
 ├── backend/
 │   ├── src/
@@ -79,16 +79,16 @@ chatosi/
 
 1. **Clone the repository**
 
-```bash
-git clone https://github.com/Bragosi/Chatosi-Real-Time-Chat-App.git
-cd Chatosi-Real-Time-Chat-App
-```
+   ```bash
+   git clone https://github.com/Bragosi/Chatosi-Real-Time-Chat-App.git
+   cd Chatosi-Real-Time-Chat-App
+   ```
 
 2. **Install all dependencies**
 
-```bash
-npm run install:all
-```
+   ```bash
+   npm run install:all
+   ```
 
 3. **Set up environment variables**
    - Copy `.env.example` to `.env` in both frontend and backend directories
