@@ -40,10 +40,16 @@ const Sidebar = () => {
 
     return isNotCurrentUser && matchesSearch && isOnlineOrNotFiltered;
   }).sort((a, b) => {
-      const aOnline = onlineUsers.includes(a._id) ? -1 : 1;
-      const bOnline = onlineUsers.includes(b._id) ? -1 : 1;
-      return aOnline - bOnline;
-    });
+    const aOnline = onlineUsers.includes(a._id);
+    const bOnline = onlineUsers.includes(b._id);
+    if (aOnline !== bOnline) {
+      return bOnline - aOnline; // online first
+    }
+    const aTime = new Date(a.lastMessage?.createdAt || 0).getTime();
+    const bTime = new Date(b.lastMessage?.createdAt || 0).getTime();
+    return bTime - aTime;
+  });
+
 
   // Mobile sidebar toggle
   const toggleMobileSidebar = () => {
@@ -202,12 +208,22 @@ const Sidebar = () => {
                         </span>
                       </div>
 
-                      {/* Last message preview could go here */}
                       {user.lastMessage && (
-                        <span className="text-xs text-base-content/50 truncate flex-1 text-right">
-                          {user.lastMessage}
-                        </span>
+                        <div className="flex items-center justify-between w-full text-xs text-base-content/50">
+                          <span className="truncate max-w-[180px]">
+                            {user.lastMessage.senderId === currentUser._id
+                              ? `You: ${user.lastMessage.content}`
+                              : user.lastMessage.content}
+                          </span>
+                          <span className="whitespace-nowrap">
+                            {new Date(user.lastMessage.createdAt).toLocaleTimeString([], {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                          </span>
+                        </div>
                       )}
+
                     </div>
                   </div>
 
